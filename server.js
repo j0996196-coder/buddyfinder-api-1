@@ -16,11 +16,17 @@ const twilio     = require("twilio");
 const app    = express();
 const server = http.createServer(app);
 const io     = new Server(server, {
-  cors: { origin: process.env.FRONTEND_URL || "*", methods: ["GET","POST"] }
+  cors: { origin: "*", methods: ["GET","POST","PUT","DELETE"] }
 });
 
 // ── MIDDLEWARE ────────────────────────────────────────────────────
-app.use(cors({ origin: process.env.FRONTEND_URL || "*" }));
+app.use(cors({
+  origin: "*",
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: false
+}));
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
